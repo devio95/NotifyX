@@ -86,6 +86,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Role>(entity =>
         {
             entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasConversion<int>();
             entity.Property(e => e.Id).UseIdentityColumn();
             entity.Property(e => e.Name).IsRequired().HasMaxLength(50);
             entity.HasIndex(e => e.Name).IsUnique();
