@@ -6,14 +6,18 @@ namespace Domain.Entities;
 public class Notification
 {
     public required int Id { get; set; }
-    public required int NotificationId { get; set; }
     public required int UserId { get; set; }
     public required string Subject { get; set; }
     public required string Text { get; set; }
-    public required NotificationMethod Method { get; set; }
-    public required NotificationType Type { get; set; }
+    public required NotificationMethodEnum NotificationMethodId { get; set; }
+    public required NotificationTypeEnum NotificationTypeId { get; set; }
+    public required long? NextNotificationExecutionId { get; set; }
+    public required DateTime? EndDate { get; set; }
 
     // Nagivation properties
 
+    public virtual NotificationMethod? NotificationMethod { get; set; }
+    public virtual NotificationType? NotificationType { get; set; }
     public virtual User? User { get; set; }
+    public virtual NotificationExecution? NextNotificationExecution { get; set; }
 }
