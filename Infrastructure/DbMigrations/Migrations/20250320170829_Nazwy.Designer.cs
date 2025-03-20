@@ -3,6 +3,7 @@ using System;
 using Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DbMigrations.Migrations
 {
     [DbContext(typeof(NotifyXDbContext))]
-    partial class NotifyXDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250320170829_Nazwy")]
+    partial class Nazwy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,10 +76,6 @@ namespace DbMigrations.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("end_date");
-
-                    b.Property<DateTime>("ExecutionStart")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("execution_start");
 
                     b.Property<long?>("NextNotificationExecutionId")
                         .HasColumnType("bigint")

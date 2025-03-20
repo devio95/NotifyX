@@ -11,16 +11,15 @@ public static class DatabaseConfiguration
 
         return services.AddDbContext<NotifyXDbContext>(options =>
         {
-            options.UseNpgsql(dbConfig.GetConnectionString("DefaultConnection"),
+            options.UseNpgsql(dbConfig.GetConnectionString("Default"),
                 npgsqlOptions => npgsqlOptions.MigrationsAssembly("DbMigrations"));
         });
     }
 
     private static IConfiguration LoadDbSettings()
     {
-        Console.WriteLine(Directory.GetCurrentDirectory());
         return new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
             .AddJsonFile("DbSettings.json")
             .Build();
     }

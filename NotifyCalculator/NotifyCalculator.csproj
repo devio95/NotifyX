@@ -10,4 +10,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Application.Interfaces\Application.Interfaces.csproj" />
+    <ProjectReference Include="..\Application\Application\Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\Database\Database.csproj" />
+  </ItemGroup>
 </Project>

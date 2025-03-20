@@ -13,6 +13,7 @@ public class Notification
     public required NotificationTypeEnum NotificationTypeId { get; set; }
     public required long? NextNotificationExecutionId { get; set; }
     public required DateTime? EndDate { get; set; }
+    public required DateTime ExecutionStart { get; set; }
 
     // Nagivation properties
 

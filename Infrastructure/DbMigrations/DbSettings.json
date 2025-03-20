@@ -1,5 +1,0 @@
-﻿{
-  "ConnectionStrings": {
-    "Default": "Server=localhost; Port=5432; Database=NotifyX2; User ID=postgres; Password=admin"
-  }
-}

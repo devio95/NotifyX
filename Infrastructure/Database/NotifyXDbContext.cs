@@ -17,10 +17,13 @@ public class NotifyXDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<UserAuthProvider> UserAuthProviders { get; set; }
     public DbSet<Description> Descriptions { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
+    public DbSet<NotificationExecution> NotificationExecutions { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSnakeCaseNamingConvention();
+        optionsBuilder.UseLazyLoadingProxies();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -43,40 +46,40 @@ public class NotifyXDbContext : DbContext
     {
         modelBuilder.Entity<User>(entity =>
         {
-        entity.HasKey(x => x.Id);
-        entity.Property(x => x.Id).UseIdentityColumn();
-        entity.Property(x => x.Email).IsRequired().HasMaxLength(150);
-        entity.Property(x => x.Name).IsRequired().HasMaxLength(100);
-        entity.Property(x => x.CreatedAt).IsRequired();
-        entity
-            .HasOne(x => x.AuthProvider)
-            .WithOne(y => y.User)
-            .HasForeignKey<UserAuthProvider>(y => y.UserId);
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Id).UseIdentityColumn();
+            entity.Property(x => x.Email).IsRequired().HasMaxLength(150);
+            entity.Property(x => x.Name).IsRequired().HasMaxLength(100);
+            entity.Property(x => x.CreatedAt).IsRequired();
             entity
-                .HasMany(u => u.Roles)
-                .WithMany()
-                .UsingEntity<Dictionary<string, object>>(
-                    "UserRole",
-                    j => j
-                        .HasOne<Role>()
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade),
-                    j => j
-                        .HasOne<User>()
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade),
-                    j =>
-                    {
-                        j.HasKey("UserId", "RoleId");
-                        j.HasIndex("RoleId");
-                    });
-            entity
-                .HasMany(x => x.Notifications)
+                .HasOne(x => x.AuthProvider)
                 .WithOne(y => y.User)
-                .HasForeignKey(y => y.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey<UserAuthProvider>(y => y.UserId);
+                entity
+                    .HasMany(u => u.Roles)
+                    .WithMany()
+                    .UsingEntity<Dictionary<string, object>>(
+                        "UserRole",
+                        j => j
+                            .HasOne<Role>()
+                            .WithMany()
+                            .HasForeignKey("RoleId")
+                            .OnDelete(DeleteBehavior.Cascade),
+                        j => j
+                            .HasOne<User>()
+                            .WithMany()
+                            .HasForeignKey("UserId")
+                            .OnDelete(DeleteBehavior.Cascade),
+                        j =>
+                        {
+                            j.HasKey("UserId", "RoleId");
+                            j.HasIndex("RoleId");
+                        });
+                entity
+                    .HasMany(x => x.Notifications)
+                    .WithOne(y => y.User)
+                    .HasForeignKey(y => y.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
         });
     }
 
@@ -132,6 +135,8 @@ public class NotifyXDbContext : DbContext
             entity.Property(x => x.NotificationTypeId).IsRequired().HasConversion<int>();
             entity.Property(x => x.NextNotificationExecutionId).IsRequired(false);
             entity.Property(x => x.EndDate).IsRequired(false);
+            entity.Property(x => x.ExecutionStart).IsRequired();
+            entity.HasQueryFilter(x => x.EndDate == null);
 
             entity.HasOne(e => e.NotificationMethod)
               .WithMany()
