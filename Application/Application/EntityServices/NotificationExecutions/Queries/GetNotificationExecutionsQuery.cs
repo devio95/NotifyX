@@ -7,7 +7,7 @@ namespace Application.EntityServices.NotificationExecutions.Queries
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        public async Task<IEnumerable<NotificationExecution>> Get()
+        public async Task<IEnumerable<NotificationExecution>> GetAsync()
         {
             IEnumerable<NotificationExecution> toReturn = [];
 

@@ -14,13 +14,19 @@ namespace NotifyCalculator
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            GenerateNotificationExecutionsCommand generateExecutions = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<GenerateNotificationExecutionsCommand>();
+
             while (stoppingToken.IsCancellationRequested == false)
             {
                 await Task.Delay(1000, stoppingToken);
-                GenerateNotificationExecutionsCommand generateExecutions = _scopeFactory.CreateScope()
-                    .ServiceProvider.GetRequiredService<GenerateNotificationExecutionsCommand>();
-
-                await generateExecutions.GenerateAsync();
+                try
+                {
+                    await generateExecutions.GenerateAsync();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.ToString());
+                }
             }
         }
     }
