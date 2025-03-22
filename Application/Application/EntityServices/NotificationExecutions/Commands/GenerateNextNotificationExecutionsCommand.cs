@@ -3,37 +3,48 @@ using Domain.Entities;
 
 namespace Application.EntityServices.NotificationExecutions.Commands
 {
-    public class GenerateNotificationExecutionsCommand(IUnitOfWork unitOfWork)
+    public class GenerateNextNotificationExecutionsCommand(IUnitOfWork unitOfWork)
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        public async Task GenerateAsync()
+
+        public async Task GenerateNextNotificationExecutionAsync(int notificationId)
         {
             await _unitOfWork.BeginTransactionAsync();
-            IEnumerable<Notification> notifications = await _unitOfWork.Notifications.GetAllWithoutNextNotificationAsync();
-
-            if (notifications.Any() == false)
+            Notification? notification = await _unitOfWork.Notifications.GetByIdAsync(notificationId);
+            if (notification == null)
             {
                 await _unitOfWork.RollbackTransactionAsync();
                 return;
             }
 
-            Dictionary<int, NotificationExecution> executions = [];
-            foreach (Notification notification in notifications)
+            if (notification.NotificationTypeId == NotificationTypeEnum.Single)
             {
-                DateTime notificationExecutionDate = GetNotificationExecution(notification);
-                executions.Add(notification.Id, await SaveNotificationExecutionAsync(notification, notificationExecutionDate));
+                await _unitOfWork.RollbackTransactionAsync();
+                return;
             }
 
-            await _unitOfWork.SaveChangesAsync();
-
-            foreach (Notification notification in notifications)
+            if (notification.NextNotificationExecution == null)
             {
-                NotificationExecution execution = executions[notification.Id];
-                notification.NextNotificationExecutionId = execution.Id;
+                await _unitOfWork.RollbackTransactionAsync();
+                return;
             }
 
-            await _unitOfWork.SaveChangesAsync();
+            if (notification.NextNotificationExecution.Result == null)
+            {
+                await _unitOfWork.RollbackTransactionAsync();
+                return;
+            }
 
+            DateTime nextExecutionDate = GetNotificationExecution(notification);
+            NotificationExecution nextNotificationExecution = await SaveNotificationExecutionAsync(notification, nextExecutionDate);
+            await _unitOfWork.SaveChangesAsync();
+            
+            notification.NextNotificationExecutionId = nextNotificationExecution.Id;
+            notification.NextNotificationExecution = nextNotificationExecution;
+
+            _unitOfWork.Notifications.Update(notification);
+
+            await _unitOfWork.SaveChangesAsync();
             await _unitOfWork.CommitTransactionAsync();
         }
 
@@ -48,7 +59,7 @@ namespace Application.EntityServices.NotificationExecutions.Commands
                 EndDate = null,
                 FailDescriptionId = null,
                 CustomFailDescription = string.Empty,
-                IsProcessing = true
+                IsProcessing = false
             });
         }
 
@@ -56,8 +67,8 @@ namespace Application.EntityServices.NotificationExecutions.Commands
         {
             switch (notification.NotificationTypeId)
             {
-                case NotificationTypeEnum.Single:
-                    return notification.ExecutionStart;
+                case NotificationTypeEnum.Minute:
+                    return CalculateExecutionDateMinute(notification);
                 case NotificationTypeEnum.Day:
                     return CalculateExecutionDateDay(notification);
                 case NotificationTypeEnum.Week:
@@ -69,6 +80,12 @@ namespace Application.EntityServices.NotificationExecutions.Commands
                 default:
                     throw new Exception();
             }
+        }
+
+        private DateTime CalculateExecutionDateMinute(Notification notification)
+        {
+            DateTime now = DateTime.UtcNow;
+            return new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute + 1, 0, DateTimeKind.Utc);
         }
 
         private DateTime CalculateExecutionDateDay(Notification notification)
@@ -202,6 +219,5 @@ namespace Application.EntityServices.NotificationExecutions.Commands
                 return executionToCompare;
             }
         }
-
     }
 }

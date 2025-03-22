@@ -25,6 +25,7 @@ public class Subscriber : ISubscriber, IAsyncDisposable
             return;
         }
 
+        await InitAsync();
         _consumer = new AsyncEventingBasicConsumer(_channel!);
         _consumer.ReceivedAsync += async (sender, args) =>
         {

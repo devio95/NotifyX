@@ -1,4 +1,7 @@
 using Application.EntityServices.NotificationExecutions.Commands;
+using Application.EntityServices.NotificationExecutions.Queries;
+using Application.EntityServices.Notifications;
+using Domain.Entities;
 
 namespace NotifyCalculator
 {
@@ -14,14 +17,20 @@ namespace NotifyCalculator
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            GenerateNotificationExecutionsCommand generateExecutions = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<GenerateNotificationExecutionsCommand>();
-
+            GenerateNextNotificationExecutionsCommand generateExecutions = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<GenerateNextNotificationExecutionsCommand>();
+            GetNotificationsQueries notificationQueries = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<GetNotificationsQueries>();
             while (stoppingToken.IsCancellationRequested == false)
             {
                 await Task.Delay(1000, stoppingToken);
                 try
                 {
-                    await generateExecutions.GenerateAsync();
+                    Notification? notification = await notificationQueries.GetOneAsync(2);
+                    if (notification == null)
+                    {
+                        continue;
+                    }
+
+                    //await generateExecutions.GenerateNextNotificationExecutionAsync(notification);
                 }
                 catch (Exception ex)
                 {

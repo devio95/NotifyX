@@ -31,4 +31,9 @@ public class NotificationExecutionRepository : INotificationExecutionRepository
             .Where(x => x.ExecutionDate <= dateTime)
             .ToListAsync();
     }
+
+    public async Task<NotificationExecution?> GetOneByIdAsync(long notificationExecutionId)
+    {
+        return await _context.NotificationExecutions.FirstOrDefaultAsync(x => x.Id == notificationExecutionId);
+    }
 }

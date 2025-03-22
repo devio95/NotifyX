@@ -1,3 +1,6 @@
+using Application.EntityServices.NotificationExecutions.Commands;
+using Application.EntityServices.Notifications;
+using Domain.Entities;
 using RabbitMq;
 
 namespace NotificationExecutioner
@@ -24,13 +27,30 @@ namespace NotificationExecutioner
             await _subscriber.StopAsync();
         }
 
-        private Task ProcessMessageAsync(string message)
+        private async Task ProcessMessageAsync(string message)
         {
-            throw new NotImplementedException();
+            NotificationExecutionSimpleCommands finishNotificationExecutionCommand = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<NotificationExecutionSimpleCommands>();
+            GenerateNextNotificationExecutionsCommand generateNextNotificationCommand = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<GenerateNextNotificationExecutionsCommand>();
+            GetNotificationsQueries getNotificationsQueries = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<GetNotificationsQueries>();
             try
             {
-                _logger.LogInformation("ODEBRANO WIADOMOSC");
-                _logger.LogInformation(message);
+                if (int.TryParse(message, out var notificationId) == false)
+                {
+                    return;
+                }
+
+                Notification? notification = await getNotificationsQueries.GetOneAsync(notificationId);
+                if (notification == null)
+                {
+                    return;
+                }
+                if (notification.NextNotificationExecutionId == null)
+                {
+                    return;
+                }
+
+                await finishNotificationExecutionCommand.FinishOkAsync(notification.NextNotificationExecutionId.Value);
+                await generateNextNotificationCommand.GenerateNextNotificationExecutionAsync(notificationId);
             }
             catch (Exception ex)
             {

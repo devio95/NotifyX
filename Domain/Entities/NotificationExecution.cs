@@ -14,4 +14,20 @@ public class NotificationExecution
     // Navigation properties
 
     public virtual Notification? Notification { get; set; }
+
+    public void FinishOk()
+    {
+        Result = true;
+        EndDate = DateTime.UtcNow;
+        FailDescriptionId = null;
+        CustomFailDescription = string.Empty;
+    }
+
+    public void FinishNok(string error)
+    {
+        Result = false;
+        EndDate = DateTime.UtcNow;
+        FailDescriptionId = null;
+        CustomFailDescription = error;
+    }
 }

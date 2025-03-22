@@ -1,3 +1,4 @@
+using Application.EntityServices.NotificationExecutions.Commands;
 using Application.EntityServices.NotificationExecutions.Queries;
 using Domain.Entities;
 using RabbitMq;
@@ -20,15 +21,17 @@ namespace NotificationDispatcher
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             GetNotificationExecutionsQuery query = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<GetNotificationExecutionsQuery>();
+            NotificationExecutionSimpleCommands notificationExecutionCommands = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<NotificationExecutionSimpleCommands>();
             while (stoppingToken.IsCancellationRequested == false)
             {
                 await Task.Delay(1000, stoppingToken);
                 try
                 {
                     IEnumerable<NotificationExecution> notificationExecutions = await query.GetAsync();
-                    foreach (NotificationExecution notification in notificationExecutions)
+                    foreach (NotificationExecution notificationExecution in notificationExecutions)
                     {
-                        await _publisher.SendAsync(notification);
+                        await notificationExecutionCommands.SetIsProcessedAsync(notificationExecution.Id);
+                        await _publisher.SendAsync(notificationExecution.NotificationId);
                     }
                 }
                 catch (Exception ex)
