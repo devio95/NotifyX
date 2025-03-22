@@ -1,8 +1,7 @@
-﻿using Application.EntityServices.NotificationExecutions.Queries;
-using Database;
+﻿using Database;
 using RabbitMq;
 
-namespace NotificationDispatcher;
+namespace NotificationExecutioner;
 
 public static class DependencyInjection
 {
@@ -11,7 +10,6 @@ public static class DependencyInjection
         return services
             .AddDatabase()
             .AddRepositories()
-            .AddRabbitMq()
-            .AddScoped<GetNotificationExecutionsQuery>();
+            .AddRabbitMq();
     }
 }

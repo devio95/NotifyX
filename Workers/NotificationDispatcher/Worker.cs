@@ -1,5 +1,6 @@
 using Application.EntityServices.NotificationExecutions.Queries;
 using Domain.Entities;
+using RabbitMq;
 
 namespace NotificationDispatcher
 {
@@ -7,11 +8,13 @@ namespace NotificationDispatcher
     {
         private readonly ILogger<Worker> _logger;
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly IPublisher _publisher;
 
         public Worker(ILogger<Worker> logger, IServiceScopeFactory scopeFactory)
         {
             _logger = logger;
             _scopeFactory = scopeFactory;
+            _publisher = scopeFactory.CreateScope().ServiceProvider.GetRequiredService<IPublisher>();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -23,6 +26,10 @@ namespace NotificationDispatcher
                 try
                 {
                     IEnumerable<NotificationExecution> notificationExecutions = await query.GetAsync();
+                    foreach (NotificationExecution notification in notificationExecutions)
+                    {
+                        await _publisher.SendAsync(notification);
+                    }
                 }
                 catch (Exception ex)
                 {

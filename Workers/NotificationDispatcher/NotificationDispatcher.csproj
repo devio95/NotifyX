@@ -15,5 +15,7 @@
     <ProjectReference Include="..\..\Application\Application.Interfaces\Application.Interfaces.csproj" />
     <ProjectReference Include="..\..\Application\Application\Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Database\Database.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\RabbitMq\RabbitMq.csproj" />
+    <ProjectReference Include="..\NotificationExecutioner\NotificationExecutioner.csproj" />
   </ItemGroup>
 </Project>
