@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.Interfaces\Application.Interfaces.csproj" />
-    <ProjectReference Include="..\Application\Application\Application.csproj" />
-    <ProjectReference Include="..\Infrastructure\Database\Database.csproj" />
+    <ProjectReference Include="..\..\Application\Application.Interfaces\Application.Interfaces.csproj" />
+    <ProjectReference Include="..\..\Application\Application\Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Database\Database.csproj" />
   </ItemGroup>
 </Project>

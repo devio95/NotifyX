@@ -1,4 +1,4 @@
-using Application.EntityServices.NotificationExecutions;
+using Application.EntityServices.NotificationExecutions.Commands;
 
 namespace NotifyCalculator
 {
@@ -16,18 +16,11 @@ namespace NotifyCalculator
         {
             while (stoppingToken.IsCancellationRequested == false)
             {
-                try
-                {
-                    await Task.Delay(1000, stoppingToken);
-                    IGenerateNotificationExecutions generateExecutions = _scopeFactory.CreateScope()
-                        .ServiceProvider.GetRequiredService<IGenerateNotificationExecutions>();
+                await Task.Delay(1000, stoppingToken);
+                GenerateNotificationExecutionsCommand generateExecutions = _scopeFactory.CreateScope()
+                    .ServiceProvider.GetRequiredService<GenerateNotificationExecutionsCommand>();
 
-                    await generateExecutions.GenerateAsync();
-                }
-                catch (Exception ex)
-                {
-
-                }
+                await generateExecutions.GenerateAsync();
             }
         }
     }

@@ -1,4 +1,4 @@
-namespace NotifyWorker
+namespace NotificationDispatcher
 {
     public class Worker : BackgroundService
     {

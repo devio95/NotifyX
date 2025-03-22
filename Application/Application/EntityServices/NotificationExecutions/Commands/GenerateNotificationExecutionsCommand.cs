@@ -1,15 +1,9 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 
-namespace Application.EntityServices.NotificationExecutions
+namespace Application.EntityServices.NotificationExecutions.Commands
 {
-    public interface IGenerateNotificationExecutions
-    {
-        Task GenerateAsync();
-    }
-
-    public class GenerateNotificationExecutions(IUnitOfWork unitOfWork)
-        : IGenerateNotificationExecutions
+    public class GenerateNotificationExecutionsCommand(IUnitOfWork unitOfWork)
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         public async Task GenerateAsync()
@@ -53,7 +47,8 @@ namespace Application.EntityServices.NotificationExecutions
                 ExecutionDate = notificationExecutionDate,
                 EndDate = null,
                 FailDescriptionId = null,
-                CustomFailDescription = string.Empty
+                CustomFailDescription = string.Empty,
+                IsProcessing = true
             });
         }
 

@@ -1,7 +1,7 @@
-﻿using Application.EntityServices.NotificationExecutions;
+﻿using Application.EntityServices.NotificationExecutions.Queries;
 using Database;
 
-namespace NotifyCalculator;
+namespace NotificationDispatcher;
 
 public static class DependencyInjection
 {
@@ -10,6 +10,6 @@ public static class DependencyInjection
         return services
             .AddDatabase()
             .AddRepositories()
-            .AddScoped<IGenerateNotificationExecutions, GenerateNotificationExecutions>();
+            .AddScoped<GetNotificationExecutionsQuery>();
     }
 }

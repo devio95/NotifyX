@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{CEBEC6E8-D9AF-49B7-A2FF-33566370FFA6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notifier", "Notifier", "{C2D6FF0D-E72D-45D1-A58A-57E204710A41}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{C2D6FF0D-E72D-45D1-A58A-57E204710A41}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{501FD204-C624-49C5-96ED-D0583BF01F92}"
 EndProject
@@ -17,13 +17,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Interfaces", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Infrastructure\Database\Database.csproj", "{62AF4227-84BC-417C-9A45-AA5730512777}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyWorker", "Notifier\NotifyWorker\NotifyWorker.csproj", "{A1B2876E-0A80-462B-A031-FBFDEC3AFDF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationExecutioner", "Workers\NotificationExecutioner\NotificationExecutioner.csproj", "{A1B2876E-0A80-462B-A031-FBFDEC3AFDF6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{9885D16C-2292-406E-8D5B-4CA17141B37E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbMigrations", "Infrastructure\DbMigrations\DbMigrations.csproj", "{23BEB8F6-44E8-40D1-A1DA-16A5A961ED3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyCalculator", "NotifyCalculator\NotifyCalculator.csproj", "{5F7AB575-301F-458A-9F41-7ABC337C6FDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationCalculator", "Workers\NotificationCalculator\NotificationCalculator.csproj", "{5F7AB575-301F-458A-9F41-7ABC337C6FDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMq", "Infrastructure\RabbitMq\RabbitMq.csproj", "{CF348745-0317-4437-B40B-7A296F39E44A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationDispatcher", "Workers\NotificationDispatcher\NotificationDispatcher.csproj", "{A402F540-D4D9-4CA7-9C68-C374ACBA0E8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +67,14 @@ Global
 		{5F7AB575-301F-458A-9F41-7ABC337C6FDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F7AB575-301F-458A-9F41-7ABC337C6FDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F7AB575-301F-458A-9F41-7ABC337C6FDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF348745-0317-4437-B40B-7A296F39E44A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF348745-0317-4437-B40B-7A296F39E44A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF348745-0317-4437-B40B-7A296F39E44A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF348745-0317-4437-B40B-7A296F39E44A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A402F540-D4D9-4CA7-9C68-C374ACBA0E8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A402F540-D4D9-4CA7-9C68-C374ACBA0E8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A402F540-D4D9-4CA7-9C68-C374ACBA0E8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A402F540-D4D9-4CA7-9C68-C374ACBA0E8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +86,8 @@ Global
 		{A1B2876E-0A80-462B-A031-FBFDEC3AFDF6} = {C2D6FF0D-E72D-45D1-A58A-57E204710A41}
 		{23BEB8F6-44E8-40D1-A1DA-16A5A961ED3A} = {CEBEC6E8-D9AF-49B7-A2FF-33566370FFA6}
 		{5F7AB575-301F-458A-9F41-7ABC337C6FDC} = {C2D6FF0D-E72D-45D1-A58A-57E204710A41}
+		{CF348745-0317-4437-B40B-7A296F39E44A} = {CEBEC6E8-D9AF-49B7-A2FF-33566370FFA6}
+		{A402F540-D4D9-4CA7-9C68-C374ACBA0E8B} = {C2D6FF0D-E72D-45D1-A58A-57E204710A41}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BDB877E0-EAFA-4D8C-9596-1E8143A56D4C}
