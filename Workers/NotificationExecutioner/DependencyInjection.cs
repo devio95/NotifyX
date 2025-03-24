@@ -1,5 +1,6 @@
 ﻿using Application.EntityServices.NotificationExecutions.Commands;
-using Application.EntityServices.Notifications;
+using Application.EntityServices.Notifications.Commands;
+using Application.EntityServices.Notifications.Queries;
 using Database;
 using RabbitMq;
 
@@ -15,6 +16,7 @@ public static class DependencyInjection
             .AddRabbitMq()
             .AddScoped<NotificationExecutionSimpleCommands>()
             .AddScoped<GenerateNextNotificationExecutionsCommand>()
-            .AddScoped<GetNotificationsQueries>();
+            .AddScoped<GetNotificationsQueries>()
+            .AddScoped<NotificationsSimpleCommands>();
     }
 }

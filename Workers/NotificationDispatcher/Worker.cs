@@ -28,10 +28,16 @@ namespace NotificationDispatcher
                 try
                 {
                     IEnumerable<NotificationExecution> notificationExecutions = await query.GetAsync();
+
+                    if (notificationExecutions.Any())
+                    {
+                        LogNotificationsToDispatch(notificationExecutions);
+                    }
+
                     foreach (NotificationExecution notificationExecution in notificationExecutions)
                     {
-                        await notificationExecutionCommands.SetIsProcessedAsync(notificationExecution.Id);
                         await _publisher.SendAsync(notificationExecution.NotificationId);
+                        await notificationExecutionCommands.SetIsProcessedAsync(notificationExecution.Id);
                     }
                 }
                 catch (Exception ex)
@@ -39,6 +45,13 @@ namespace NotificationDispatcher
                     _logger.LogError(ex.ToString());
                 }
             }
+        }
+
+        private void LogNotificationsToDispatch(IEnumerable<NotificationExecution> notificationExecutions)
+        {
+            string log = $"Notifications to dispatch: {notificationExecutions.Count()}{Environment.NewLine}";
+            log += $"{string.Join(",", notificationExecutions.Select(x => x.Id.ToString()))}";
+            _logger.LogInformation(log);
         }
     }
 }

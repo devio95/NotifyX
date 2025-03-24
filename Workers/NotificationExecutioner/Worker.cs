@@ -1,5 +1,6 @@
 using Application.EntityServices.NotificationExecutions.Commands;
-using Application.EntityServices.Notifications;
+using Application.EntityServices.Notifications.Commands;
+using Application.EntityServices.Notifications.Queries;
 using Domain.Entities;
 using RabbitMq;
 
@@ -29,9 +30,14 @@ namespace NotificationExecutioner
 
         private async Task ProcessMessageAsync(string message)
         {
-            NotificationExecutionSimpleCommands finishNotificationExecutionCommand = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<NotificationExecutionSimpleCommands>();
-            GenerateNextNotificationExecutionsCommand generateNextNotificationCommand = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<GenerateNextNotificationExecutionsCommand>();
-            GetNotificationsQueries getNotificationsQueries = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<GetNotificationsQueries>();
+            _logger.LogInformation($"Message to process{Environment.NewLine}{message}");
+            IServiceProvider provider = _scopeFactory.CreateScope().ServiceProvider;
+            NotificationExecutionSimpleCommands finishNotificationExecutionCommand = provider.GetRequiredService<NotificationExecutionSimpleCommands>();
+            GenerateNextNotificationExecutionsCommand generateNextNotificationCommand = provider.GetRequiredService<GenerateNextNotificationExecutionsCommand>();
+            GetNotificationsQueries getNotificationsQueries = provider.GetRequiredService<GetNotificationsQueries>();
+            NotificationsSimpleCommands notificationsSimpleCommands = provider.GetRequiredService<NotificationsSimpleCommands>();
+
+
             try
             {
                 if (int.TryParse(message, out var notificationId) == false)
@@ -44,17 +50,22 @@ namespace NotificationExecutioner
                 {
                     return;
                 }
+
                 if (notification.NextNotificationExecutionId == null)
                 {
                     return;
                 }
 
-                await finishNotificationExecutionCommand.FinishOkAsync(notification.NextNotificationExecutionId.Value);
+                long nextNotificationExecutionId = notification.NextNotificationExecutionId.Value;
+                await notificationsSimpleCommands.ClearNextNotificationExecutionAsync(notification.Id);
+                await finishNotificationExecutionCommand.FinishOkAsync(nextNotificationExecutionId);
                 await generateNextNotificationCommand.GenerateNextNotificationExecutionAsync(notificationId);
+
+                _logger.LogInformation($"Message processed OK");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.ToString());
+                _logger.LogError($"Message processing FAILED{Environment.NewLine}{ex.ToString()}");
             }
         }
     }

@@ -1,9 +1,9 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 
-namespace Application.EntityServices.Notifications
+namespace Application.EntityServices.Notifications.Queries
 {
-    public  class GetNotificationsQueries(IUnitOfWork unitOfWork)
+    public class GetNotificationsQueries(IUnitOfWork unitOfWork)
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         public async Task<Notification?> GetOneAsync(int notificationId)

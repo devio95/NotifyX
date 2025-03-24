@@ -85,7 +85,8 @@ namespace Application.EntityServices.NotificationExecutions.Commands
         private DateTime CalculateExecutionDateMinute(Notification notification)
         {
             DateTime now = DateTime.UtcNow;
-            return new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute + 1, 0, DateTimeKind.Utc);
+            DateTime toReturn = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0, DateTimeKind.Utc);
+            return toReturn.AddMinutes(1);
         }
 
         private DateTime CalculateExecutionDateDay(Notification notification)
