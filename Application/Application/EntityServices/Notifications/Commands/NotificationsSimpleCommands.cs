@@ -19,6 +19,7 @@ public class NotificationsSimpleCommands(IUnitOfWork unitOfWork)
 
         notification.NextNotificationExecutionId = null;
         notification.NextNotificationExecution = null;
+
         _unitOfWork.Notifications.Update(notification);
 
         await _unitOfWork.SaveChangesAsync();

@@ -23,18 +23,6 @@ namespace Application.EntityServices.NotificationExecutions.Commands
                 return;
             }
 
-            if (notification.NextNotificationExecution == null)
-            {
-                await _unitOfWork.RollbackTransactionAsync();
-                return;
-            }
-
-            if (notification.NextNotificationExecution.Result == null)
-            {
-                await _unitOfWork.RollbackTransactionAsync();
-                return;
-            }
-
             DateTime nextExecutionDate = GetNotificationExecution(notification);
             NotificationExecution nextNotificationExecution = await SaveNotificationExecutionAsync(notification, nextExecutionDate);
             await _unitOfWork.SaveChangesAsync();

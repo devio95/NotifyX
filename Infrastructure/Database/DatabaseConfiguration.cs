@@ -9,9 +9,12 @@ public static class DatabaseConfiguration
     {
         IConfiguration dbConfig = LoadDbSettings();
 
+        string? connectionString = Environment.GetEnvironmentVariable("NotifyX_ConnectionString") 
+            ?? dbConfig.GetConnectionString("Default");
+
         return services.AddDbContext<NotifyXDbContext>(options =>
         {
-            options.UseNpgsql(dbConfig.GetConnectionString("Default"),
+            options.UseNpgsql(connectionString,
                 npgsqlOptions => npgsqlOptions.MigrationsAssembly("DbMigrations"));
         });
     }

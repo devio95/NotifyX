@@ -20,6 +20,7 @@ namespace NotificationExecutioner
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            await Task.Delay(5000);
             await _subscriber.StartAsync(ProcessMessageAsync, stoppingToken);
             while (stoppingToken.IsCancellationRequested == false)
             {

@@ -36,4 +36,9 @@ public class NotificationExecutionRepository : INotificationExecutionRepository
     {
         return await _context.NotificationExecutions.FirstOrDefaultAsync(x => x.Id == notificationExecutionId);
     }
+
+    public void Update(NotificationExecution notification)
+    {
+        _context.NotificationExecutions.Update(notification);
+    }
 }

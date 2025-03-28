@@ -18,7 +18,7 @@ public class NotificationExecutionSimpleCommands(IUnitOfWork unitOfWork)
         }
 
         notificationExecution.FinishOk();
-        _unitOfWork.NotificationExecutions.Equals(notificationExecution);
+        _unitOfWork.NotificationExecutions.Update(notificationExecution);
 
         await _unitOfWork.SaveChangesAsync();
         await _unitOfWork.CommitTransactionAsync();
@@ -35,6 +35,7 @@ public class NotificationExecutionSimpleCommands(IUnitOfWork unitOfWork)
         }
 
         notificationExecution.FinishNok(error);
+        _unitOfWork.NotificationExecutions.Update(notificationExecution);
 
         await _unitOfWork.SaveChangesAsync();
         await _unitOfWork.CommitTransactionAsync();
@@ -51,6 +52,7 @@ public class NotificationExecutionSimpleCommands(IUnitOfWork unitOfWork)
         }
 
         notificationExecution.IsProcessing = true;
+        _unitOfWork.NotificationExecutions.Update(notificationExecution);
 
         await _unitOfWork.SaveChangesAsync();
         await _unitOfWork.CommitTransactionAsync();
