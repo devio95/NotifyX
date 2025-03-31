@@ -5,9 +5,9 @@ using RabbitMq;
 
 namespace NotificationDispatcher;
 
-public static class DependencyInjection
+internal static class DependencyInjection
 {
-    public static IServiceCollection AddDI(this IServiceCollection services)
+    internal static IServiceCollection AddDI(this IServiceCollection services)
     {
         return services
             .AddDatabase()
