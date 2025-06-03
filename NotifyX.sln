@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationDispatcher", "W
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{942614D5-2638-42D5-9105-24D7F4EC2888}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI\WebAPI.csproj", "{D52DE716-31B4-45D5-8741-4DFDC36EFB23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{942614D5-2638-42D5-9105-24D7F4EC2888}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{942614D5-2638-42D5-9105-24D7F4EC2888}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{942614D5-2638-42D5-9105-24D7F4EC2888}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D52DE716-31B4-45D5-8741-4DFDC36EFB23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D52DE716-31B4-45D5-8741-4DFDC36EFB23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D52DE716-31B4-45D5-8741-4DFDC36EFB23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D52DE716-31B4-45D5-8741-4DFDC36EFB23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
