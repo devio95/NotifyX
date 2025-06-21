@@ -1,12 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using WebAPI;
 using WebAPI.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 
 builder.Services.AddControllers();
 
@@ -14,6 +12,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IConfigureOptions<SwaggerGenOptions>, SwaggerConfigurator>();
 builder.Services.AddSingleton<IConfigureOptions<SwaggerUIOptions>, SwaggerUIOptionsConfiguration>();
+
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = true;
+});
+
+builder.Services.AddDI(builder.Configuration);
 
 var app = builder.Build();
 

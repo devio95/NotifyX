@@ -2,18 +2,34 @@
 
 public class NotificationExecution
 {
-    public required long Id { get; set; }
-    public required int NotificationId { get; set; }
-    public required bool? Result { get; set; }
-    public required DateTime ExecutionDate { get; set; }
-    public required DateTime? EndDate { get; set; }
-    public required int? FailDescriptionId { get; set; }
-    public required string CustomFailDescription { get; set; }
-    public required bool IsProcessing { get; set; }
+    public long Id { get; private set; }
+    public int NotificationId { get; private set; }
+    public bool? Result { get; private set; }
+    public DateTime ExecutionDate { get; private set; }
+    public DateTime? EndDate { get; private set; }
+    public int? FailDescriptionId { get; private set; }
+    public string CustomFailDescription { get; private set; } = string.Empty;
+    public bool IsProcessing { get; private set; }
+
+    protected NotificationExecution() { }
 
     // Navigation properties
 
     public virtual Notification? Notification { get; set; }
+
+    public static NotificationExecution CreateForNotification(int notificationId, DateTime executionDate)
+    {
+        return new NotificationExecution()
+        {
+            NotificationId = notificationId,
+            Result = null,
+            ExecutionDate = executionDate,
+            EndDate = null,
+            FailDescriptionId = null,
+            CustomFailDescription = string.Empty,
+            IsProcessing = false
+        };
+    }
 
     public void FinishOk()
     {

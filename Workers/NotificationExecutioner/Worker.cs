@@ -38,7 +38,6 @@ namespace NotificationExecutioner
             GetNotificationsQueries getNotificationsQueries = provider.GetRequiredService<GetNotificationsQueries>();
             NotificationsSimpleCommands notificationsSimpleCommands = provider.GetRequiredService<NotificationsSimpleCommands>();
 
-
             try
             {
                 if (int.TryParse(message, out var notificationId) == false)
