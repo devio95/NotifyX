@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Application.Interfaces\Application.Interfaces.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EntityServices\Notifications\Commands\" />
+  </ItemGroup>
+
 </Project>
