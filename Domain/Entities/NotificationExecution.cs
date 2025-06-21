@@ -31,6 +31,11 @@ public class NotificationExecution
         };
     }
 
+    public void StartProcessing()
+    {
+        IsProcessing = true;
+    }
+
     public void FinishOk()
     {
         Result = true;

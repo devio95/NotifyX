@@ -15,8 +15,7 @@ internal static class DependencyInjection
             .AddRepositories()
             .AddRabbitMq()
             .AddScoped<NotificationExecutionSimpleCommands>()
-            .AddScoped<GenerateNextNotificationExecutionsCommand>()
-            .AddScoped<GetNotificationsQueries>()
-            .AddScoped<NotificationsSimpleCommands>();
+            .AddScoped<ProcessNotificationCommand>()
+            .AddScoped<GetNotificationsQueries>();
     }
 }

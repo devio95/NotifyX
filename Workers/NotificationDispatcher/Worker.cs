@@ -37,7 +37,7 @@ namespace NotificationDispatcher
                     foreach (NotificationExecution notificationExecution in notificationExecutions)
                     {
                         await _publisher.SendAsync(notificationExecution.NotificationId);
-                        await notificationExecutionCommands.SetIsProcessedAsync(notificationExecution.Id);
+                        await notificationExecutionCommands.StartProcessingAsync(notificationExecution.Id);
                     }
                 }
                 catch (Exception ex)

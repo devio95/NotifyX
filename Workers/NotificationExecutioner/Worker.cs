@@ -33,10 +33,7 @@ namespace NotificationExecutioner
         {
             _logger.LogInformation($"Message to process{Environment.NewLine}{message}");
             IServiceProvider provider = _scopeFactory.CreateScope().ServiceProvider;
-            NotificationExecutionSimpleCommands finishNotificationExecutionCommand = provider.GetRequiredService<NotificationExecutionSimpleCommands>();
-            GenerateNextNotificationExecutionsCommand generateNextNotificationCommand = provider.GetRequiredService<GenerateNextNotificationExecutionsCommand>();
-            GetNotificationsQueries getNotificationsQueries = provider.GetRequiredService<GetNotificationsQueries>();
-            NotificationsSimpleCommands notificationsSimpleCommands = provider.GetRequiredService<NotificationsSimpleCommands>();
+            ProcessNotificationCommand processNotificationCommand = provider.GetRequiredService<ProcessNotificationCommand>();
 
             try
             {
@@ -45,21 +42,7 @@ namespace NotificationExecutioner
                     return;
                 }
 
-                Notification? notification = await getNotificationsQueries.GetOneAsync(notificationId);
-                if (notification == null)
-                {
-                    return;
-                }
-
-                if (notification.NextNotificationExecutionId == null)
-                {
-                    return;
-                }
-
-                long nextNotificationExecutionId = notification.NextNotificationExecutionId.Value;
-                await notificationsSimpleCommands.ClearNextNotificationExecutionAsync(notification.Id);
-                await finishNotificationExecutionCommand.FinishOkAsync(nextNotificationExecutionId);
-                await generateNextNotificationCommand.GenerateNextNotificationExecutionAsync(notificationId);
+                await processNotificationCommand.ProcessNotificationExecutionAsync(notificationId);
 
                 _logger.LogInformation($"Message processed OK");
             }
