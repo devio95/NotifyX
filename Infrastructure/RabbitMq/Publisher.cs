@@ -1,15 +1,12 @@
-﻿using RabbitMQ.Client;
+﻿using Application.Interfaces.Services;
+using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
 
 namespace RabbitMq;
 
-public interface IPublisher
-{
-    Task SendAsync(object obj);
-}
 
-public class Publisher : IPublisher, IAsyncDisposable
+public class Publisher : IMessagePublisher, IAsyncDisposable, IDisposable
 {
     private IConnection? _connection;
     private IChannel? _channel;
@@ -59,5 +56,17 @@ public class Publisher : IPublisher, IAsyncDisposable
     {
         await _channel?.CloseAsync();
         await _connection?.CloseAsync();
+    }
+
+    public void Dispose()
+    {
+        try
+        {
+            _channel?.CloseAsync().GetAwaiter().GetResult();
+            _connection?.CloseAsync().GetAwaiter().GetResult();
+        }
+        catch
+        {
+        }
     }
 }

@@ -1,0 +1,76 @@
+services:
+  keycloak-db:
+    image: postgres:latest
+    container_name: keycloak-db
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+        - keycloak_db_data:/var/lib/postgresql/data
+    environment:
+        - POSTGRES_DB=keycloak
+        - POSTGRES_USER=keycloak
+        - POSTGRES_PASSWORD=keycloak123
+        - PGPORT=5433
+        
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin123
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://localhost:5433/keycloak
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_PASSWORD=keycloak123
+      - KC_HOSTNAME_STRICT=false
+      - KC_HOSTNAME_STRICT_HTTPS=false
+      - KC_HTTP_ENABLED=true
+      - KC_HTTP_PORT=8081
+    command: ["start-dev"]
+    depends_on:
+      - keycloak-db
+      
+  database:
+    image: postgres:latest
+    container_name: database
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=NotifyX
+      - PGPORT=5432
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+
+  notification-dispatcher:
+    image: devio95/notification-dispatcher
+    pull_policy: always
+    container_name: notification-dispatcher
+    restart: unless-stopped
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Production
+        - RabbitMQ_HostName=rabbitmq
+        - NotifyX_ConnectionString=Server=host.docker.internal; Port=5432; Database=NotifyX; User ID=postgres; Password=admin
+    depends_on:
+        - rabbitmq
+
+volumes:
+  keycloak_db_data:
+  keycloak_data:
+  pgdata:

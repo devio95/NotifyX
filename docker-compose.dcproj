@@ -7,7 +7,7 @@
     <ProjectGuid>942614d5-2638-42d5-9105-24d7f4ec2888</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="docker-compose.keycloak.yml" />
+    <None Include="docker-compose.development.yml" />
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
   </ItemGroup>

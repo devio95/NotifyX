@@ -31,7 +31,7 @@ public class NotificationExecution
         };
     }
 
-    public void StartProcessing()
+    public void SetIsProcessing()
     {
         IsProcessing = true;
     }

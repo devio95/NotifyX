@@ -1,6 +1,4 @@
-﻿using Application.EntityServices.NotificationExecutions.Commands;
-using Application.EntityServices.Notifications.Commands;
-using Application.EntityServices.Notifications.Queries;
+﻿using Application;
 using Database;
 using RabbitMq;
 
@@ -11,11 +9,9 @@ internal static class DependencyInjection
     internal static IServiceCollection AddDI(this IServiceCollection services)
     {
         return services
+            .AddApplication()
             .AddDatabase()
             .AddRepositories()
-            .AddRabbitMq()
-            .AddScoped<NotificationExecutionSimpleCommands>()
-            .AddScoped<ProcessNotificationCommand>()
-            .AddScoped<GetNotificationsQueries>();
+            .AddRabbitMq();
     }
 }

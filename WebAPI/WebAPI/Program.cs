@@ -12,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IConfigureOptions<SwaggerGenOptions>, SwaggerConfigurator>();
 builder.Services.AddSingleton<IConfigureOptions<SwaggerUIOptions>, SwaggerUIOptionsConfiguration>();
+builder.Services.AddDI(builder.Configuration);
 
 builder.Services.Configure<RouteOptions>(options =>
 {

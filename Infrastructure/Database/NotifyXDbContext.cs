@@ -168,6 +168,11 @@ public class NotifyXDbContext : DbContext
             entity.Property(x => x.EndDate).IsRequired(false);
             entity.Property(x => x.FailDescriptionId).IsRequired(false);
             entity.Property(x => x.CustomFailDescription).IsRequired(false).HasMaxLength(500);
+            entity.Property(x => x.IsProcessing).IsRequired();
+            entity.HasOne(x => x.Notification)
+                .WithMany()
+                .HasForeignKey(x => x.NotificationId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 

@@ -19,6 +19,11 @@ public class NotificationExecutionRepository : INotificationExecutionRepository
         return execution;
     }
 
+    public async Task<IEnumerable<NotificationExecution>> GetAll()
+    {
+        return await _context.NotificationExecutions.ToListAsync();
+    }
+
     public async Task<IEnumerable<NotificationExecution>> GetAsync(DateTime dateTime, int pastMinutes)
     {
         pastMinutes = Math.Abs(pastMinutes) * -1;

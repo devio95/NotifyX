@@ -3,6 +3,7 @@ using Application.Interfaces.Repositories;
 using Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
 using System.Data;
 
 namespace Database;

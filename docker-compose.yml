@@ -1,6 +1,7 @@
 services:
   notification-dispatcher:
     image: devio95/notification-dispatcher
+    pull_policy: always
     container_name: notification-dispatcher
     restart: unless-stopped
     environment:
@@ -14,6 +15,7 @@ services:
  
   notification-executioner:
     image: devio95/notification-executioner
+    pull_policy: always
     container_name: notification-executioner
     restart: unless-stopped
     environment:

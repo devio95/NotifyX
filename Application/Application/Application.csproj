@@ -11,7 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="EntityServices\Notifications\Commands\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Functionalities\Notifications\Commands\" />
+    <Folder Include="Functionalities\Notifications\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.3" />
   </ItemGroup>
 
 </Project>

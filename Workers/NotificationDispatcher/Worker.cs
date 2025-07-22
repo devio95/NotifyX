@@ -1,7 +1,8 @@
+using Application.DTO.NotificationExecutions;
 using Application.EntityServices.NotificationExecutions.Commands;
 using Application.EntityServices.NotificationExecutions.Queries;
-using Domain.Entities;
-using RabbitMq;
+using Application.Functionalities.NotificationExecutions.Queries;
+using MediatR;
 
 namespace NotificationDispatcher
 {
@@ -9,35 +10,33 @@ namespace NotificationDispatcher
     {
         private readonly ILogger<Worker> _logger;
         private readonly IServiceScopeFactory _scopeFactory;
-        private readonly IPublisher _publisher;
-
+        
         public Worker(ILogger<Worker> logger, IServiceScopeFactory scopeFactory)
         {
             _logger = logger;
             _scopeFactory = scopeFactory;
-            _publisher = scopeFactory.CreateScope().ServiceProvider.GetRequiredService<IPublisher>();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            GetNotificationExecutionsQuery query = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<GetNotificationExecutionsQuery>();
-            NotificationExecutionSimpleCommands notificationExecutionCommands = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<NotificationExecutionSimpleCommands>();
             while (stoppingToken.IsCancellationRequested == false)
             {
                 await Task.Delay(1000, stoppingToken);
                 try
                 {
-                    IEnumerable<NotificationExecution> notificationExecutions = await query.GetAsync();
+                    using var scope = _scopeFactory.CreateScope();
+                    var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-                    if (notificationExecutions.Any())
+                    NotificationExecutionsGetFilteredResponse notificationExecutions = await mediator.Send(new NotificationExecutionsGetFilteredQuery(5));
+
+                    if (notificationExecutions.Response.Any())
                     {
-                        LogNotificationsToDispatch(notificationExecutions);
+                        LogNotificationsToDispatch(notificationExecutions.Response);
                     }
 
-                    foreach (NotificationExecution notificationExecution in notificationExecutions)
+                    foreach (NotificationExecutionGetDto notificationExecution in notificationExecutions.Response)
                     {
-                        await _publisher.SendAsync(notificationExecution.NotificationId);
-                        await notificationExecutionCommands.StartProcessingAsync(notificationExecution.Id);
+                        await mediator.Send(new NotificationExecutionStartProcessingCommand(notificationExecution.Id));
                     }
                 }
                 catch (Exception ex)
@@ -47,7 +46,7 @@ namespace NotificationDispatcher
             }
         }
 
-        private void LogNotificationsToDispatch(IEnumerable<NotificationExecution> notificationExecutions)
+        private void LogNotificationsToDispatch(IEnumerable<NotificationExecutionGetDto> notificationExecutions)
         {
             string log = $"Notifications to dispatch: {notificationExecutions.Count()}{Environment.NewLine}";
             log += $"{string.Join(",", notificationExecutions.Select(x => x.Id.ToString()))}";

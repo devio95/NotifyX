@@ -1,7 +1,5 @@
-using Application.EntityServices.NotificationExecutions.Commands;
-using Application.EntityServices.Notifications.Commands;
-using Application.EntityServices.Notifications.Queries;
-using Domain.Entities;
+using Application.Functionalities.NotificationExecutions.Commands;
+using MediatR;
 using RabbitMq;
 
 namespace NotificationExecutioner
@@ -9,8 +7,8 @@ namespace NotificationExecutioner
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly IServiceScopeFactory _scopeFactory;
         private readonly ISubscriber _subscriber;
+        private readonly IServiceScopeFactory _scopeFactory;
         public Worker(ILogger<Worker> logger, IServiceScopeFactory scopeFactory)
         {
             _logger = logger;
@@ -20,29 +18,39 @@ namespace NotificationExecutioner
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await Task.Delay(5000);
-            await _subscriber.StartAsync(ProcessMessageAsync, stoppingToken);
-            while (stoppingToken.IsCancellationRequested == false)
+            try
             {
-                await Task.Delay(1000, stoppingToken);
+                string host = RabbitMq.Config.HostName;
+                _logger.LogInformation("HOST: " + host);
+                await Task.Delay(5000);
+                await _subscriber.StartAsync(ProcessMessageAsync, stoppingToken);
+                while (stoppingToken.IsCancellationRequested == false)
+                {
+                    await Task.Delay(1000, stoppingToken);
+                }
+                await _subscriber.StopAsync();
             }
-            await _subscriber.StopAsync();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+            }
         }
 
         private async Task ProcessMessageAsync(string message)
         {
             _logger.LogInformation($"Message to process{Environment.NewLine}{message}");
-            IServiceProvider provider = _scopeFactory.CreateScope().ServiceProvider;
-            ProcessNotificationCommand processNotificationCommand = provider.GetRequiredService<ProcessNotificationCommand>();
 
             try
             {
-                if (int.TryParse(message, out var notificationId) == false)
+                using var scope = _scopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                if (int.TryParse(message, out var notificationExecutionId) == false)
                 {
                     return;
                 }
 
-                await processNotificationCommand.ProcessNotificationExecutionAsync(notificationId);
+                await mediator.Send(new NotificationExecutionSendCommand(notificationExecutionId));
 
                 _logger.LogInformation($"Message processed OK");
             }

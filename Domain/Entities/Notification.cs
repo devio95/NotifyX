@@ -37,7 +37,7 @@ public class Notification
         }
     }
 
-    public void ClearNextNotificationExecution()
+    private void ClearNextNotificationExecution()
     {
         NextNotificationExecutionId = null;
         NextNotificationExecution = null;
@@ -45,11 +45,6 @@ public class Notification
 
     public NotificationExecution? ScheduleNextNotificationExecution()
     {
-        if (NextNotificationExecutionId != null)
-        {
-            throw new InvalidOperationException("Juz istnieje notyfikacja");
-        }
-
         if (NotificationTypeId == NotificationTypeEnum.Single)
         {
             return null;
