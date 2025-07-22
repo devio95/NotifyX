@@ -34,7 +34,7 @@ namespace NotificationDispatcher
                         LogNotificationsToDispatch(notificationExecutions.Response);
                     }
 
-                    foreach (NotificationExecutionGetDto notificationExecution in notificationExecutions.Response)
+                    foreach (NotificationExecutionsGetFilteredDto notificationExecution in notificationExecutions.Response)
                     {
                         await mediator.Send(new NotificationExecutionStartProcessingCommand(notificationExecution.Id));
                     }
@@ -46,7 +46,7 @@ namespace NotificationDispatcher
             }
         }
 
-        private void LogNotificationsToDispatch(IEnumerable<NotificationExecutionGetDto> notificationExecutions)
+        private void LogNotificationsToDispatch(IEnumerable<NotificationExecutionsGetFilteredDto> notificationExecutions)
         {
             string log = $"Notifications to dispatch: {notificationExecutions.Count()}{Environment.NewLine}";
             log += $"{string.Join(",", notificationExecutions.Select(x => x.Id.ToString()))}";

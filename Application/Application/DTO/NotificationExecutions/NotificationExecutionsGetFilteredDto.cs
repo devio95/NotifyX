@@ -2,7 +2,7 @@
 
 namespace Application.DTO.NotificationExecutions;
 
-public class NotificationExecutionGetDto
+public class NotificationExecutionsGetFilteredDto
 {
     public long Id { get; }
     public bool? Result { get; }
@@ -11,7 +11,7 @@ public class NotificationExecutionGetDto
     public string CustomFailDescription { get; } = string.Empty;
     public bool IsProcessing { get; }
 
-    public NotificationExecutionGetDto(NotificationExecution ne)
+    public NotificationExecutionsGetFilteredDto(NotificationExecution ne)
     {
         Id = ne.Id;
         Result = ne.Result;

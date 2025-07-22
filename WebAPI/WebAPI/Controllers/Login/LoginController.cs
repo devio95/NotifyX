@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Application.EntityServices.OAuthTokens.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers.Login;
@@ -10,9 +11,9 @@ public class LoginController : NotifyXController
     { }
 
     [HttpPost]
-    public async Task<ActionResult<int>> Token()
+    public async Task<ActionResult<GenerateAccessTokenCommandResponse>> Token([FromForm(Name = "client_id")] string clientId, [FromForm(Name = "client_secret")] string clientSecret)
     {
-        await Task.Delay(1);
-        return 5;
+        GenerateAccessTokenCommandResponse response = await _mediator.Send(new GenerateAccessTokenCommand(clientId, clientSecret));
+        return response;
     }
 }

@@ -3,34 +3,38 @@ services:
     image: postgres:latest
     container_name: keycloak-db
     restart: unless-stopped
-    network_mode: host
+    ports:
+        - "5433:5432"
     volumes:
         - keycloak_db_data:/var/lib/postgresql/data
     environment:
         - POSTGRES_DB=keycloak
         - POSTGRES_USER=keycloak
         - POSTGRES_PASSWORD=keycloak123
-        - PGPORT=5433
-        
+    networks:
+        - notification-network
+
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
     restart: unless-stopped
-    network_mode: host
+    ports:
+      - "8081:8080"
     volumes:
       - keycloak_data:/opt/keycloak/data
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin123
       - KC_DB=postgres
-      - KC_DB_URL=jdbc:postgresql://localhost:5433/keycloak
+      - KC_DB_URL=jdbc:postgresql://keycloak-db:5432/keycloak
       - KC_DB_USERNAME=keycloak
       - KC_DB_PASSWORD=keycloak123
       - KC_HOSTNAME_STRICT=false
       - KC_HOSTNAME_STRICT_HTTPS=false
       - KC_HTTP_ENABLED=true
-      - KC_HTTP_PORT=8081
     command: ["start-dev"]
+    networks:
+      - notification-network
     depends_on:
       - keycloak-db
       
@@ -74,3 +78,7 @@ volumes:
   keycloak_db_data:
   keycloak_data:
   pgdata:
+  
+networks:
+  notification-network:
+    driver: bridge

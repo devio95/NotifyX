@@ -4,9 +4,9 @@ namespace Application.Functionalities.NotificationExecutions.Queries
 {
     public class NotificationExecutionsGetFilteredResponse
     {
-        public IEnumerable<NotificationExecutionGetDto> Response { get; }
+        public IEnumerable<NotificationExecutionsGetFilteredDto> Response { get; }
 
-        public NotificationExecutionsGetFilteredResponse(IEnumerable<NotificationExecutionGetDto> dtos)
+        public NotificationExecutionsGetFilteredResponse(IEnumerable<NotificationExecutionsGetFilteredDto> dtos)
         {
             Response = dtos;
         }

@@ -4,7 +4,6 @@ using Application.Functionalities.NotificationExecutions.Queries;
 using Application.Interfaces;
 using Domain.Entities;
 using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace Application.EntityServices.NotificationExecutions.Queries;
 
@@ -34,6 +33,6 @@ public class NotificationExecutionsGetFilteredQueryHandler(IUnitOfWork unitOfWor
 
         toReturn = await _unitOfWork.NotificationExecutions.GetAsync(DateTime.UtcNow, request.MinutesPast);
 
-        return new NotificationExecutionsGetFilteredResponse(toReturn.Select(x => new NotificationExecutionGetDto(x)));
+        return new NotificationExecutionsGetFilteredResponse(toReturn.Select(x => new NotificationExecutionsGetFilteredDto(x)));
     }
 }

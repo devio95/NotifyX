@@ -2,8 +2,16 @@
 
 public class AuthResult
 {
-    public string AccessToken { get; set; } = string.Empty;
-    public string TokenType { get; set; } = string.Empty;
-    public int ExpiresIn { get; set; }
-    public string RefreshToken { get; set; } = string.Empty;
+    public string AccessToken { get; } = string.Empty;
+    public string TokenType { get; } = string.Empty;
+    public int ExpiresIn { get; }
+    public string RefreshToken { get; } = string.Empty;
+
+    public AuthResult(string accessToken, string tokenType, int expiresIn, string refreshToken)
+    {
+        AccessToken = accessToken;
+        TokenType = tokenType;
+        ExpiresIn = expiresIn;
+        RefreshToken = refreshToken;
+    }
 }

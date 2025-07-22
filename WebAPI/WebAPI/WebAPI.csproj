@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\Application\Application\Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Database\Database.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Keycloak\Keycloak.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\RabbitMq\RabbitMq.csproj" />
   </ItemGroup>
 
 </Project>
