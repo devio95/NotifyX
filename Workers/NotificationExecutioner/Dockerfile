@@ -1,5 +1,5 @@
 FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
-USER app
+USER $APP_UID
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
@@ -8,6 +8,7 @@ WORKDIR /src
 COPY ["Workers/NotificationExecutioner/NotificationExecutioner.csproj", "Workers/NotificationExecutioner/"]
 COPY ["Application/Application.Interfaces/Application.Interfaces.csproj", "Application/Application.Interfaces/"]
 COPY ["Domain/Domain.csproj", "Domain/"]
+COPY ["Application/Application.Messages/Application.Messages.csproj", "Application/Application.Messages/"]
 COPY ["Application/Application/Application.csproj", "Application/Application/"]
 COPY ["Infrastructure/Database/Database.csproj", "Infrastructure/Database/"]
 COPY ["Infrastructure/RabbitMq/RabbitMq.csproj", "Infrastructure/RabbitMq/"]

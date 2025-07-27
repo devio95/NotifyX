@@ -1,4 +1,4 @@
-﻿namespace Application.DTO.AccessTokens;
+﻿namespace Application.Auth.DTO;
 
 public class GenerateAccessTokenDto
 {

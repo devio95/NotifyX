@@ -1,0 +1,5 @@
+docker build -f Workers/NotificationDispatcher/Dockerfile -t devio95/notification-dispatcher:latest .
+docker push devio95/notification-dispatcher:latest
+
+docker build -f Workers/NotificationExecutioner/Dockerfile -t devio95/notification-executioner:latest .
+docker push devio95/notification-executioner:latest

@@ -31,6 +31,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI\Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keycloak", "Infrastructure\Keycloak\Keycloak.csproj", "{6BB2D08C-FD08-4AB9-9F93-D4652E21CF42}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Messages", "Application\Application.Messages\Application.Messages.csproj", "{F3FF72A1-10CD-4F88-B6FB-4E32030C42FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Auth", "Application\Application.Auth\Application.Auth.csproj", "{067854D5-A970-40F2-8E22-51B1A74E4E6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +85,14 @@ Global
 		{6BB2D08C-FD08-4AB9-9F93-D4652E21CF42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BB2D08C-FD08-4AB9-9F93-D4652E21CF42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BB2D08C-FD08-4AB9-9F93-D4652E21CF42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3FF72A1-10CD-4F88-B6FB-4E32030C42FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3FF72A1-10CD-4F88-B6FB-4E32030C42FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3FF72A1-10CD-4F88-B6FB-4E32030C42FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3FF72A1-10CD-4F88-B6FB-4E32030C42FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{067854D5-A970-40F2-8E22-51B1A74E4E6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{067854D5-A970-40F2-8E22-51B1A74E4E6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{067854D5-A970-40F2-8E22-51B1A74E4E6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{067854D5-A970-40F2-8E22-51B1A74E4E6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +106,8 @@ Global
 		{CF348745-0317-4437-B40B-7A296F39E44A} = {CEBEC6E8-D9AF-49B7-A2FF-33566370FFA6}
 		{A402F540-D4D9-4CA7-9C68-C374ACBA0E8B} = {C2D6FF0D-E72D-45D1-A58A-57E204710A41}
 		{6BB2D08C-FD08-4AB9-9F93-D4652E21CF42} = {CEBEC6E8-D9AF-49B7-A2FF-33566370FFA6}
+		{F3FF72A1-10CD-4F88-B6FB-4E32030C42FA} = {A4700A30-7C4C-41DC-ACEF-91D110833F23}
+		{067854D5-A970-40F2-8E22-51B1A74E4E6F} = {A4700A30-7C4C-41DC-ACEF-91D110833F23}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BDB877E0-EAFA-4D8C-9596-1E8143A56D4C}

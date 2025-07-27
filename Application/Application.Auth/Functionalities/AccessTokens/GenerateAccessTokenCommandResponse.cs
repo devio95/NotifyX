@@ -1,6 +1,6 @@
-﻿using Application.DTO.AccessTokens;
+﻿using Application.Auth.DTO;
 
-namespace Application.EntityServices.OAuthTokens.Commands;
+namespace Application.Auth.AccessTokens.Commands;
 
 public class GenerateAccessTokenCommandResponse
 {

@@ -10,5 +10,6 @@
     <None Include="docker-compose.development.yml" />
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
+    <None Include="DockerCommands.txt" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace Application.Exceptions
+﻿namespace Application.Interfaces.Exceptions
 {
     public class DataValidationException : Exception
     {

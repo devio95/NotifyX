@@ -1,7 +1,7 @@
 ﻿using Application.DTO.NotificationExecutions;
-using Application.Exceptions;
 using Application.Functionalities.NotificationExecutions.Queries;
 using Application.Interfaces;
+using Application.Interfaces.Exceptions;
 using Domain.Entities;
 using MediatR;
 

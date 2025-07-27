@@ -1,30 +1,35 @@
-﻿using Application.Exceptions;
-using Application.Interfaces;
+﻿using Application.Interfaces;
+using Application.Interfaces.Exceptions;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.Functionalities.NotificationExecutions.Commands;
+namespace Application.Messages.Functionalities;
 
-public class NotificationExecutionSendCommand : IRequest<Unit>
+public class ExecuteMessageCommand : IRequest<Unit>
 {
     public long NotificationExecutionId { get; }
 
-    public NotificationExecutionSendCommand(long notificationExecutionId)
+    public ExecuteMessageCommand(string message)
     {
-        if (notificationExecutionId < 0)
+        if (string.IsNullOrWhiteSpace(message))
         {
             throw new DataValidationException("NotificationId must be greater than 0");
+        }
+
+        if (int.TryParse(message, out int notificationExecutionId) == false)
+        {
+            throw new DataValidationException("Message must be integer");
         }
 
         NotificationExecutionId = notificationExecutionId;
     }
 }
 
-public class NotificationProcessCommandHandler(IUnitOfWork unitOfWork)
-    : IRequestHandler<NotificationExecutionSendCommand, Unit>
+public class ExecuteMessageCommandHandler(IUnitOfWork unitOfWork)
+    : IRequestHandler<ExecuteMessageCommand, Unit>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    public async Task<Unit> Handle(NotificationExecutionSendCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(ExecuteMessageCommand request, CancellationToken cancellationToken)
     {
 
         try

@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Exceptions\" />
     <Folder Include="Functionalities\Notifications\Commands\" />
     <Folder Include="Functionalities\Notifications\Queries\" />
   </ItemGroup>

@@ -1,14 +1,14 @@
-﻿using Application.Interfaces.Services;
+﻿using Application.Interfaces.Services.Messages;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace RabbitMq;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddRabbitMq(this IServiceCollection services)
+    public static IServiceCollection AddRabbitMqSingleton(this IServiceCollection services)
     {
         return services
-            .AddScoped<IMessagePublisher, Publisher>()
-            .AddScoped<ISubscriber, Subscriber>();
+            .AddSingleton<IMessageSubscriber, Subscriber>()
+            .AddSingleton<IMessagePublisher, Publisher>();
     }
 }

@@ -16,8 +16,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Application\Application.Interfaces\Application.Interfaces.csproj" />
+    <ProjectReference Include="..\..\Application\Application.Messages\Application.Messages.csproj" />
     <ProjectReference Include="..\..\Application\Application\Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Database\Database.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Keycloak\Keycloak.csproj" />
     <ProjectReference Include="..\..\Infrastructure\RabbitMq\RabbitMq.csproj" />
   </ItemGroup>
 </Project>

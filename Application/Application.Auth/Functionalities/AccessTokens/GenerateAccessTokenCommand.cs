@@ -1,9 +1,9 @@
-﻿using Application.DTO.AccessTokens;
-using Application.Exceptions;
+﻿using Application.Auth.DTO;
+using Application.Interfaces.Exceptions;
 using Application.Interfaces.Services.Auth;
 using MediatR;
 
-namespace Application.EntityServices.OAuthTokens.Commands;
+namespace Application.Auth.AccessTokens.Commands;
 
 public class GenerateAccessTokenCommand : IRequest<GenerateAccessTokenCommandResponse>
 { 

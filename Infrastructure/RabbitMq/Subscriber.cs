@@ -1,16 +1,11 @@
-﻿using RabbitMQ.Client;
+﻿using Application.Interfaces.Services.Messages;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 
 namespace RabbitMq;
 
-public interface ISubscriber
-{
-    Task StartAsync(Func<string, Task> handler, CancellationToken cancellationToken);
-    Task StopAsync();
-}
-
-public class Subscriber : ISubscriber, IAsyncDisposable
+public class Subscriber : IMessageSubscriber, IAsyncDisposable
 {
     private IConnection? _connection;
     private IChannel? _channel;
@@ -18,7 +13,7 @@ public class Subscriber : ISubscriber, IAsyncDisposable
     private bool _isRunning = false;
     private string _consumerTag = string.Empty;
 
-    public async Task StartAsync(Func<string, Task> handler, CancellationToken cancellationToken)
+    public async Task StartAsync(Func<string, Task> handler)
     {
         if (_isRunning)
         {

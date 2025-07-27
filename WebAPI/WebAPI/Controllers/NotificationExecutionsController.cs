@@ -1,5 +1,4 @@
-﻿using Application.EntityServices.NotificationExecutions.Commands;
-using Application.Functionalities.NotificationExecutions.Commands;
+﻿using Application.Messages.Functionalities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,16 +12,16 @@ public class NotificationExecutionsController : NotifyXController
     { }
 
     [HttpPost("start-processing")]
-    public async Task<ActionResult> StartProcessing(long notificationExecutionId)
+    public async Task<ActionResult> StartProcessing(string notificationExecutionId)
     {
-        await _mediator.Send(new NotificationExecutionStartProcessingCommand(notificationExecutionId));
+        await _mediator.Send(new ExecuteMessageCommand(notificationExecutionId));
         return Ok();
     }
 
     [HttpPost("send")]
     public async Task<ActionResult> Send(long notificationExecutionId)
     {
-        await _mediator.Send(new NotificationExecutionSendCommand(notificationExecutionId));
+        await _mediator.Send(new PublishMessageCommand(notificationExecutionId));
         return Ok();
     }
 }

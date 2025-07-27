@@ -1,7 +1,4 @@
-using Application.DTO.NotificationExecutions;
-using Application.EntityServices.NotificationExecutions.Commands;
-using Application.EntityServices.NotificationExecutions.Queries;
-using Application.Functionalities.NotificationExecutions.Queries;
+using Application.Messages.Functionalities;
 using MediatR;
 
 namespace NotificationDispatcher
@@ -27,30 +24,13 @@ namespace NotificationDispatcher
                     using var scope = _scopeFactory.CreateScope();
                     var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-                    NotificationExecutionsGetFilteredResponse notificationExecutions = await mediator.Send(new NotificationExecutionsGetFilteredQuery(5));
-
-                    if (notificationExecutions.Response.Any())
-                    {
-                        LogNotificationsToDispatch(notificationExecutions.Response);
-                    }
-
-                    foreach (NotificationExecutionsGetFilteredDto notificationExecution in notificationExecutions.Response)
-                    {
-                        await mediator.Send(new NotificationExecutionStartProcessingCommand(notificationExecution.Id));
-                    }
+                    await mediator.Send(new ExecuteMessagesCommand());
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex.ToString());
                 }
             }
-        }
-
-        private void LogNotificationsToDispatch(IEnumerable<NotificationExecutionsGetFilteredDto> notificationExecutions)
-        {
-            string log = $"Notifications to dispatch: {notificationExecutions.Count()}{Environment.NewLine}";
-            log += $"{string.Join(",", notificationExecutions.Select(x => x.Id.ToString()))}";
-            _logger.LogInformation(log);
         }
     }
 }

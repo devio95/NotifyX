@@ -1,4 +1,4 @@
-﻿using Application.EntityServices.OAuthTokens.Commands;
+﻿using Application.Auth.AccessTokens.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

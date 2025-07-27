@@ -1,15 +1,15 @@
-﻿using Application.Exceptions;
-using Application.Interfaces;
-using Application.Interfaces.Services;
+﻿using Application.Interfaces;
+using Application.Interfaces.Exceptions;
+using Application.Interfaces.Services.Messages;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.EntityServices.NotificationExecutions.Commands;
+namespace Application.Messages.Functionalities;
 
-public class NotificationExecutionStartProcessingCommand : IRequest<Unit>
+public class PublishMessageCommand : IRequest<Unit>
 {
     public long NotificationExecutionId { get; }
-    public NotificationExecutionStartProcessingCommand(long notificationExecutionId)
+    public PublishMessageCommand(long notificationExecutionId)
     {
         if (notificationExecutionId < 0)
         {
@@ -20,13 +20,13 @@ public class NotificationExecutionStartProcessingCommand : IRequest<Unit>
     }
 }
 
-public class NotificationExecutionStartProcessingCommandHandler(IUnitOfWork unitOfWork, IMessagePublisher publisher)
-    : IRequestHandler<NotificationExecutionStartProcessingCommand, Unit>
+public class PublishMessageCommandHandler(IUnitOfWork unitOfWork, IMessagePublisher publisher)
+    : IRequestHandler<PublishMessageCommand, Unit>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMessagePublisher _publisher = publisher;
 
-    public async Task<Unit> Handle(NotificationExecutionStartProcessingCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(PublishMessageCommand request, CancellationToken cancellationToken)
     {
         await _unitOfWork.BeginTransactionAsync();
         NotificationExecution? notificationExecution = await _unitOfWork.NotificationExecutions.GetOneByIdAsync(request.NotificationExecutionId);

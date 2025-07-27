@@ -1,4 +1,5 @@
 ﻿using Application;
+using Application.Messages;
 using Database;
 using RabbitMq;
 
@@ -10,8 +11,9 @@ internal static class DependencyInjection
     {
         return services
             .AddApplication()
+            .AddApplicationMessages()
             .AddDatabase()
             .AddRepositories()
-            .AddRabbitMq();
+            .AddRabbitMqSingleton();
     }
 }
