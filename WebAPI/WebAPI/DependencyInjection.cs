@@ -1,10 +1,8 @@
 ﻿using Application;
 using Application.Auth;
-using Application.Messages;
 using Database;
 using Keycloak;
 using Keycloak.Options;
-using RabbitMq;
 
 namespace WebAPI;
 
@@ -15,11 +13,9 @@ public static class DependencyInjection
         AddOptions(services, configuration);
         services.AddApplication();
         services.AddApplicationAuth();
-        services.AddApplicationMessages();
         services.AddDatabase();
         services.AddRepositories();
         services.AddKeycloak(configuration);
-        services.AddRabbitMqSingleton();
     }
 
     private static void AddOptions(IServiceCollection services, IConfiguration configuration)
