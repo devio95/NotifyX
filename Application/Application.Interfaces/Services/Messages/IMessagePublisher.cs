@@ -3,4 +3,6 @@
 public interface IMessagePublisher
 {
     Task SendAsync(object obj);
+    Task<bool> PingAsync();
+
 }

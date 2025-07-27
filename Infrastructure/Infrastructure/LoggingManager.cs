@@ -22,5 +22,8 @@ namespace Infrastructure
 
         public void LogException(Exception ex)
             => _logger.LogError(ex, null);
+
+        public void LogError(string error)
+            => _logger.LogError(error);
     }
 }

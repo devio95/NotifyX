@@ -18,9 +18,16 @@ namespace NotificationExecutioner
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            if (await WaitForServerAsync(stoppingToken) == false)
+            {
+                _logger.LogError("No connection with Messages Server");
+                return;
+            }
+
+            _logger.LogInformation("Connection with Messages Server OK");
             try
             {
-                await TrySubscribeAsync(stoppingToken);
+                await _mediator.Send(new StartMessageSubscribtionCommand());
                 while (stoppingToken.IsCancellationRequested == false)
                 {
                     await Task.Delay(1000, stoppingToken);
@@ -35,24 +42,11 @@ namespace NotificationExecutioner
             }
         }
 
-        private async Task TrySubscribeAsync(CancellationToken stoppingToken)
+        private async Task<bool> WaitForServerAsync(CancellationToken stoppingToken)
         {
-            for (int i = 1; i <= 10; i++)
-            {
-                try
-                {
-                    await _mediator.Send(new StartMessageSubscribtionCommand());
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, $"Execute Async {i}/10");
-                    await Task.Delay(2000, stoppingToken);
-                    continue;
-                }
-            }
-
-            throw new Exception("Unable to subscribe");
+            using var scope = _scopeFactory.CreateScope();
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+            return await mediator.Send(new WaitForMessagesServerCommand(), stoppingToken);
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)

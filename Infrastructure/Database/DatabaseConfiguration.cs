@@ -12,6 +12,7 @@ public static class DatabaseConfiguration
         string? connectionString = Environment.GetEnvironmentVariable("NotifyX_ConnectionString") 
             ?? dbConfig.GetConnectionString("Default");
 
+        Console.WriteLine(connectionString);
         return services.AddDbContext<NotifyXDbContext>(options =>
         {
             options.UseNpgsql(connectionString,

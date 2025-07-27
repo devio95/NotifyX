@@ -12,6 +12,7 @@ services:
       - notification-network
     depends_on:
       - rabbitmq
+      - notification-executioner
  
   notification-executioner:
     image: devio95/notification-executioner
@@ -45,7 +46,7 @@ services:
     container_name: database
     restart: unless-stopped
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     environment:

@@ -49,7 +49,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=NotifyX
-      - PGPORT=5432
+      - PGPORT=5434
 
   rabbitmq:
     image: rabbitmq:3-management

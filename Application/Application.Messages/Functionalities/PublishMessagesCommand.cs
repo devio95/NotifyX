@@ -6,17 +6,19 @@ using MediatR;
 
 namespace Application.Messages.Functionalities;
 
-public record PublishMessages : IRequest<Unit>;
+public record PublishMessagesCommand : IRequest<Unit>;
 
-public class PublishMessagesCommandHandler(IMediator mediator)
-    : IRequestHandler<PublishMessages, Unit>
+public class PublishMessagesCommandHandler(IMediator mediator, ILoggingManager<PublishMessageCommandHandler> logger)
+    : IRequestHandler<PublishMessagesCommand, Unit>
 {
     private readonly IMediator _mediator = mediator;
-    public async Task<Unit> Handle(PublishMessages request, CancellationToken cancellationToken)
+    private readonly ILoggingManager<PublishMessageCommandHandler> _logger = logger;
+    public async Task<Unit> Handle(PublishMessagesCommand request, CancellationToken cancellationToken)
     {
         NotificationExecutionsGetFilteredResponse notificationsToDispatch = await _mediator.Send(new NotificationExecutionsGetFilteredQuery(5));
         if (notificationsToDispatch.Response.Any() == false)
         {
+            _logger.LogInformation("Nothing to dispatch");
             return Unit.Value;
         }
 

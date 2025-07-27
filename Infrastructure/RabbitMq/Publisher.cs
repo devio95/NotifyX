@@ -69,4 +69,17 @@ public class Publisher : IMessagePublisher, IAsyncDisposable, IDisposable
         {
         }
     }
+
+    public async Task<bool> PingAsync()
+    {
+        try
+        {
+            await InitAsync();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }
