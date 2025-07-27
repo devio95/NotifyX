@@ -1,6 +1,7 @@
 ﻿using Application;
 using Application.Messages;
 using Database;
+using Infrastructure;
 using Keycloak;
 using RabbitMq;
 
@@ -15,6 +16,7 @@ internal static class DependencyInjection
             .AddApplicationMessages()
             .AddDatabase()
             .AddRepositories()
-            .AddRabbitMqSingleton();
+            .AddRabbitMqSingleton()
+            .AddInfrastructure();
     }
 }

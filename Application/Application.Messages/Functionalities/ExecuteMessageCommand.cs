@@ -25,15 +25,17 @@ public class ExecuteMessageCommand : IRequest<Unit>
     }
 }
 
-public class ExecuteMessageCommandHandler(IUnitOfWork unitOfWork)
+public class ExecuteMessageCommandHandler(IUnitOfWork unitOfWork, ILoggingManager<ExecuteMessageCommandHandler> logger)
     : IRequestHandler<ExecuteMessageCommand, Unit>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly ILoggingManager<ExecuteMessageCommandHandler> _logger = logger;
     public async Task<Unit> Handle(ExecuteMessageCommand request, CancellationToken cancellationToken)
     {
 
         try
         {
+            _logger.LogInformation($"Executing Notification [{request.NotificationExecutionId}]");
             NotificationExecution? notificationExecution = await _unitOfWork.NotificationExecutions.GetOneByIdAsync(request.NotificationExecutionId);
             if (notificationExecution == null)
             {
@@ -65,6 +67,7 @@ public class ExecuteMessageCommandHandler(IUnitOfWork unitOfWork)
         }
         catch (Exception ex)
         {
+            _logger.LogException(ex);
             await _unitOfWork.RollbackTransactionAsync();
             return Unit.Value;
         }

@@ -20,14 +20,16 @@ public class PublishMessageCommand : IRequest<Unit>
     }
 }
 
-public class PublishMessageCommandHandler(IUnitOfWork unitOfWork, IMessagePublisher publisher)
+public class PublishMessageCommandHandler(IUnitOfWork unitOfWork, IMessagePublisher publisher, ILoggingManager<PublishMessageCommandHandler> logger)
     : IRequestHandler<PublishMessageCommand, Unit>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMessagePublisher _publisher = publisher;
+    private readonly ILoggingManager<PublishMessageCommandHandler> _logger = logger;
 
     public async Task<Unit> Handle(PublishMessageCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogInformation($"Publishing notification [{request.NotificationExecutionId}]");
         await _unitOfWork.BeginTransactionAsync();
         NotificationExecution? notificationExecution = await _unitOfWork.NotificationExecutions.GetOneByIdAsync(request.NotificationExecutionId);
         if (notificationExecution == null)

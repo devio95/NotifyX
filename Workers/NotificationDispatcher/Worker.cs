@@ -24,7 +24,7 @@ namespace NotificationDispatcher
                     using var scope = _scopeFactory.CreateScope();
                     var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-                    await mediator.Send(new ExecuteMessagesCommand());
+                    await mediator.Send(new PublishMessages());
                 }
                 catch (Exception ex)
                 {

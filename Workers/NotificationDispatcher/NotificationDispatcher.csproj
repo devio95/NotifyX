@@ -12,6 +12,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageReference Include="NLog" Version="6.0.2" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="6.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +21,7 @@
     <ProjectReference Include="..\..\Application\Application.Messages\Application.Messages.csproj" />
     <ProjectReference Include="..\..\Application\Application\Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Database\Database.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Keycloak\Keycloak.csproj" />
     <ProjectReference Include="..\..\Infrastructure\RabbitMq\RabbitMq.csproj" />
   </ItemGroup>
