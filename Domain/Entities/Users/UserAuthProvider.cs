@@ -2,12 +2,21 @@
 
 public class UserAuthProvider
 {
-    public required int Id { get; set; }
-    public required int UserId { get; set; }
-    public required string Provider { get; set; }
-    public required string ProviderUserId { get; set; }
+    public int Id { get; private set; }
+    public int UserId { get; private set; }
+    public string Provider { get; private set; } = string.Empty;
+    public string ProviderUserId { get; private set; } = string.Empty;
 
     // Navigation properties
 
     public virtual User? User { get; set; }
+
+    public static UserAuthProvider New(string provider, string providerUserId)
+    {
+        return new UserAuthProvider()
+        {
+            Provider = provider,
+            ProviderUserId = providerUserId
+        };
+    }
 }

@@ -4,14 +4,16 @@ public class GenerateAccessTokenDto
 {
     public string AccessToken { get; }
     public string TokenType { get; }
-    public int ExpiresIn { get; }
-    public string RefreshToken { get; }
+    public DateTime ExpiresIn { get; }
+    public string Audience { get; }
+    public string Issuer { get; }
 
-    public GenerateAccessTokenDto(string accessToken, string tokenType, int expiresIn, string refreshToken)
+    public GenerateAccessTokenDto(string accessToken, string tokenType, DateTime expiresIn, string audience, string issuer)
     {
         AccessToken = accessToken;
         TokenType = tokenType;
         ExpiresIn = expiresIn;
-        RefreshToken = refreshToken;
+        Audience = audience;
+        Issuer = issuer;
     }
 }

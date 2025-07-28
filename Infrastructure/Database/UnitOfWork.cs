@@ -15,12 +15,20 @@ public class UnitOfWork(NotifyXDbContext context)
     private bool _disposed = false;
     private INotificationRepository? _notificationRepository;
     private INotificationExecutionRepository? _notificationExecutionRepository;
+    private IUserRepository? _userRepository;
+    private IUserAuthProviderRepository? _userAuthProviderRepository;
 
     public INotificationRepository Notifications =>
         _notificationRepository ??= new NotificationRepository(_context);
 
     public INotificationExecutionRepository NotificationExecutions =>
         _notificationExecutionRepository ??= new NotificationExecutionRepository(_context);
+
+    public IUserRepository Users =>
+        _userRepository ??= new UserRepository(_context);
+
+    public IUserAuthProviderRepository UserAuthProviders =>
+        _userAuthProviderRepository ??= new UserAuthProviderRepository(_context);
 
     public async Task<int> SaveChangesAsync()
     {

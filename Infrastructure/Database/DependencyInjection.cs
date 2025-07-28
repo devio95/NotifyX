@@ -12,6 +12,8 @@ public static class DependencyInjection
         return services
             .AddScoped<INotificationRepository, NotificationRepository>()
             .AddScoped<INotificationExecutionRepository, NotificationExecutionRepository>()
+            .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<IUserAuthProviderRepository, UserAuthProviderRepository>()
             .AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

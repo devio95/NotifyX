@@ -17,6 +17,6 @@ public static class DependencyInjection
             client.BaseAddress = new Uri(options.Address);
         });
 
-        services.AddScoped<IAuthService, KeycloakAuthService>();
+        services.AddScoped<IExternalAuthService, KeycloakAuthService>();
     }
 }

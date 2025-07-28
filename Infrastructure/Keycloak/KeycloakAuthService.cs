@@ -6,11 +6,11 @@ using System.Text.Json;
 namespace Keycloak;
 
 public class KeycloakAuthService(IHttpClientFactory httpClientFactory, IOptions<KeycloakOptions> keycloakOptions)
-    : IAuthService
+    : IExternalAuthService
 {
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
     private readonly KeycloakOptions _keycloakOptions = keycloakOptions.Value;
-    public async Task<AuthResult> AuthenticateAsync(string clientId, string clientSecret)
+    public async Task<ExternalAuthResult> AuthenticateAsync(string clientId, string clientSecret)
     {
         try
         {
@@ -37,7 +37,7 @@ public class KeycloakAuthService(IHttpClientFactory httpClientFactory, IOptions<
                 PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
             });
 
-            return new AuthResult(
+            return new ExternalAuthResult(
                 accessToken: keycloakResponse?.AccessToken ?? string.Empty,
                 tokenType: keycloakResponse?.TokenType ?? "Bearer",
                 expiresIn: keycloakResponse?.ExpiresIn ?? 0,

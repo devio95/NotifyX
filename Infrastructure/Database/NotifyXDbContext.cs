@@ -227,14 +227,7 @@ public class NotifyXDbContext : DbContext
 
     private void SeedUsers(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().HasData(
-            new User
-            {
-                Id = 1,
-                Email = "",
-                Name = "Admin",
-                CreatedAt = new DateTime(2025, 3, 19, 0, 0, 0, DateTimeKind.Utc)
-            });
+        modelBuilder.Entity<User>().HasData(User.Admin());
     }
 
     private void SeedRoles(ModelBuilder modelBuilder)
